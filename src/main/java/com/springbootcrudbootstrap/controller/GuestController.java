@@ -16,11 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springbootcrudbootstrap.bean.GuestBean;
@@ -52,30 +48,24 @@ public class GuestController {
 
 	private static final String PARAM_ID = "id";
 	
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String ShowHomePageIndex(HttpServletRequest httpServletRequest,Model model){
 		return path + "/" +"index";
 	}
 	
-	/*@RequestMapping(value="/listGuest", method=RequestMethod.GET)
-	public String ShowRegister(HttpServletRequest httpServletRequest,Model model){
-		model.addAttribute("guestList",guestService.findAll());
-		return path + "/" +"list-guest";
-	}*/
-	
-	@RequestMapping(value="/newGuest", method=RequestMethod.GET)
+	@GetMapping("/newGuest")
 	public String ShowAddForm(HttpServletRequest httpServletRequest,Model model){
 		return path + "/" +"add-form";
 	}
 	
-	@RequestMapping(value="/editGuest/{id}", method=RequestMethod.GET)
+	@GetMapping("/editGuest/{id}")
 	public String ShowEditCustomer(HttpServletRequest httpServletRequest,Model model,final @PathVariable(PARAM_ID) long id){
 		Guest guest = guestService.findId(id);
 		model.addAttribute("guest",guest);
 		return path + "/" +"edit-form";
 	}
 	
-	@RequestMapping(value="/newGuest/submit", method=RequestMethod.POST)
+	@PostMapping("/newGuest/submit")
 	public String AddNew(HttpServletRequest httpServletRequest,Model model,final @Validated GuestBean params,RedirectAttributes redirectAttrs)throws Exception{
 		redirectAttrs.addFlashAttribute("guest" , params);
 		redirectAttrs.addFlashAttribute("messageType" , "Info");
@@ -86,7 +76,7 @@ public class GuestController {
 		return "redirect:" + "/newGuest";
 	}
 	
-	@RequestMapping(value="/editGuest/submit", method=RequestMethod.POST)
+	@PostMapping("/editGuest/submit")
 	public String EditGuest(HttpServletRequest httpServletRequest,Model model,final @Validated GuestBean params,RedirectAttributes redirectAttrs)throws Exception{
 		redirectAttrs.addFlashAttribute("guest" , params);
 		redirectAttrs.addFlashAttribute("messageType" , "Info");
@@ -96,13 +86,13 @@ public class GuestController {
 		return "redirect:" + "/editGuest/"+params.getId();
 	}
 	
-	@RequestMapping(value="/deleteGuest/{id}", method=RequestMethod.POST)
+	@PostMapping("/deleteGuest/{id}")
 	public String DeleteGuest(HttpServletRequest httpServletRequest,Model model,final @PathVariable(PARAM_ID) long id){
 		guestService.deleteById(id); 
 		return "redirect:" + "/"; 
 	}
 	
-	@RequestMapping(value="/listGuest", method=RequestMethod.GET)
+	@GetMapping("/listGuest")
 	public String ShowGuestPagin(HttpServletRequest httpServletRequest,Model model,@RequestParam(value = "mySearch", required = false) String mySearch,@RequestParam(value = "page", required = false) Integer page){
 		if(page == null){page = 1;}
 		int totalRecord = Integer.valueOf(guestService.findAll().size());
@@ -123,7 +113,7 @@ public class GuestController {
 		return path + "/" +"list-guest";
 	}
 	
-	@RequestMapping(value = "/report", method=RequestMethod.GET)
+	@GetMapping("/report")
 	@ResponseBody
 	public String ShowReport(Model model ,HttpServletRequest httpServletRequest,HttpServletResponse response) throws JarException, IOException, JRException{
 		List<Map<String, ?>> listCustomer =  reportService.findAllReportCustomer();
