@@ -75,10 +75,11 @@
 		</dependency>
 
 		<dependency>
+			<!--
+			https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<version>6.16.0</version>
-
+			<version>6.20.6</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.lowagie</groupId>
