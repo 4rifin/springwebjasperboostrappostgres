@@ -48,7 +48,7 @@ public class GuestController {
 
 	private static final String PARAM_ID = "id";
 	
-	@GetMapping("/")
+	@GetMapping("/index")
 	public String ShowHomePageIndex(HttpServletRequest httpServletRequest,Model model){
 		return path + "/" +"index";
 	}
